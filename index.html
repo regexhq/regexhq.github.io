@@ -2,45 +2,25 @@
 
 <html>
   <head>
-    <title>Twitter &hearts; Open Source</title>
-    <link rel="stylesheet" type="text/css" href="assets/reset.css">
-    <link rel="stylesheet" type="text/css" href="assets/grid.css">
-    <link rel="stylesheet" type="text/css" href="assets/style.css">
-    <link href="//abs.twimg.com/favicons/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <title>RegExps &mdash; Centralized place for community-driven collections of RegExp patterns and tools that can make our life easier.</title>
+    <link rel="stylesheet" type="text/css" href="http://regexps.github.io/assets/reset.css">
+    <link rel="stylesheet" type="text/css" href="http://regexps.github.io/assets/grid.css">
+    <link rel="stylesheet" type="text/css" href="http://regexps.github.io/assets/style.css">
+    <link href="http://abs.twimg.com/favicons/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <script type="text/javascript" src="http://regexps.github.io/assets/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="http://regexps.github.io/assets/strftime.js"></script>
     <script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-39101739-1']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-    </script>
-    <script type="text/javascript" src="assets/jquery-1.7.1.min.js"></script>
-    <script type="text/javascript" src="assets/strftime.js"></script>
-    <script type="text/javascript">
-    (function ($, undefined) {
+    $(function () {
 
       // Put custom repo URL's in this object, keyed by repo name.
-      var repoUrls = {
-        "bootstrap": "http://twitter.github.com/bootstrap/",
-        "finagle": "http://twitter.github.com/finagle/",
-        "hogan.js": "http://twitter.github.com/hogan.js/"
-      };
+      var repoUrls = {};
 
       function repoUrl(repo) {
         return repoUrls[repo.name] || repo.html_url;
       }
 
       // Put custom repo descriptions in this object, keyed by repo name.
-      var repoDescriptions = {
-        "bootstrap": "An HTML, CSS, and JS toolkit designed to kickstart development of webapps and sites",
-        "naggati2": "A protocol builder for Netty using Scala 2.8"
-      };
+      var repoDescriptions = {};
 
       function repoDescription(repo) {
         return repoDescriptions[repo.name] || repo.description;
@@ -77,6 +57,11 @@
         $item.appendTo("#repos");
       }
 
+      function ignoreRepos(repo) {
+        // console.log(repo)
+        return ['regexps.github.io', 'meta'].indexOf(repo.name) === -1;
+      }
+
       function addRepos(repos, page) {
         repos = repos || [];
         page = page || 1;
@@ -87,11 +72,12 @@
 
         $.getJSON(uri, function (result) {
           if (result.data && result.data.length > 0) {
-            repos = repos.concat(result.data);
+            repos = repos.concat(result.data).filter(ignoreRepos);
             addRepos(repos, page + 1);
           }
           else {
             $(function () {
+              repos = repos.filter(ignoreRepos)
               $("#num-repos").text(repos.length);
 
               // Convert pushed_at to Date.
@@ -243,32 +229,30 @@
           }
         });
       }
-    })(jQuery);
+    });
     </script>
   </head>
   <body>
     <div id="wrapper" class="grid clearfix">
       <div id="main" class="grid-1">
-        <div id="logo"><h1>Twitter Open Source</h1></div>
-        <h1>Twitter is built on open source software.</h1>
-        <p>Want to help? <a href="https://twitter.com/jobs">Join the Flock</a></p>
-        <p>Visit <a href="https://dev.twitter.com/">dev.twitter.com</a></p>
-        <p><a href="https://twitter.com/about/resources">Logos and other goodies</a></p>
+        <div><h1>RegExps</h1></div>
+        <h1>Regular expressions by and for the community</h1>
+        <p>Centralized place for community-driven collections of RegExp patterns and tools that can make our life easier.</p>
       </div>
 
       <div class="grid grid-3">
         <div id="statistics" class="grid-1 alpha header">
           <h1>Statistics</h1>
           <p>
-            <a href="https://github.com/twitter/repositories"><span id="num-repos"><img src="assets/spinner.gif" /></span> public repos</a>
+            <a href="https://github.com/regexps/repositories"><span id="num-repos"><img src="assets/spinner.gif" /></span> public repos</a>
             <br>
-            <a href="https://github.com/twitter?tab=members"><span id="num-members"><img src="assets/spinner.gif" /></span> members</a>
+            <a href="https://github.com/regexps?tab=members"><span id="num-members"><img src="assets/spinner.gif" /></span> members</a>
           </p>
-          <p class="email"><a href="mailto:opensource@twitter.com">opensource@twitter.com</a></p>
+          <p class="email"><a href="https://github.com/regexps/meta">Discussion board</a></p>
         </div>
 
         <div id="recently-updated" class="grid-2 omega header">
-          <h1>Recently updated <a href="https://github.com/twitter/repositories">View All on GitHub</a></h1>
+          <h1>Recently updated <a href="https://github.com/regexps/repositories">View All on GitHub</a></h1>
           <ol id="recently-updated-repos"></ol>
         </div>
       </div>
